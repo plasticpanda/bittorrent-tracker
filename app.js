@@ -7,7 +7,7 @@ var http = require('http')
 
 var HTTPTracker = require("./lib/tracker").HTTPTracker
   , tracker = new HTTPTracker()
-  , server = http.createServer(tracker.requestHandler);
-  
-server.listen(6969);
+  , server = http.createServer(tracker.requestHandler());
+
+server.listen(6969, '0.0.0.0');
 logger.ok('Tracker server listening on port ' + 6969);
