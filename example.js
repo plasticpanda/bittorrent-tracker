@@ -1,5 +1,13 @@
-var tracker = require("./lib/tracker");
+/*jshint node:true, laxcomma:true, indent:2, undef:true, strict:true, unused:true, curly:true, white:true, eqnull:true */
 
-var t = tracker.Tracker();
+'use strict';
 
-tracker.http.createServer(t, 6969);
+var http = require('http')
+  , logger = require('coolog')('example.js');
+
+var HTTPTracker = require("./lib/tracker").HTTPTracker
+  , tracker = new HTTPTracker()
+  , server = http.createServer(tracker.requestHandler);
+  
+server.listen(6969);
+logger.ok('Tracker server listening on port ' + 6969);
