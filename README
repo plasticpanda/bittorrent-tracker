@@ -1,0 +1,5 @@
+Run node example.js to start the tracker.
+
+Supports both UDP and HTTP requests.
+
+Tested with Node 0.4.4
