@@ -4,6 +4,7 @@
   "description": "node-bittorrent-tracker",
   "main": "lib/tracker/index.js",
   "dependencies": {
-    "sugar": "~1.3.8"
+    "sugar": "~1.3.8",
+    "coolog": "~0.1.6"
   }
 }
