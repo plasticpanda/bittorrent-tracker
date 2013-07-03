@@ -3,7 +3,7 @@
 'use strict';
 
 var http = require('http')
-  , logger = require('coolog')('example.js');
+  , logger = require('coolog')('app.js', true);
 
 var HTTPTracker = require("./lib/tracker").HTTPTracker
   , tracker = new HTTPTracker()
