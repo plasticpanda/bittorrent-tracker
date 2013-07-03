@@ -2,8 +2,9 @@
 Bittorrent Tracker
 ==================
 
-Status: **working**.
+Status: **working** ([and rollin'](http://plasticpanda.github.io/they-see-me-rolling/)).
 
+Tested with Node v0.10.
 See app.js for a working example.
 
 ```bash
