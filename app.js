@@ -3,7 +3,35 @@
 'use strict';
 
 var http = require('http')
+  , logentries = require('node-logentries')
   , logger = require('coolog')('app.js', true);
+
+var LOGENTRIES_APIKEY = process.env.LOGENTRIES_APIKEY;
+
+/**
+ * Setup logging
+ */
+
+var logentries_logger = logentries.logger({
+  token: LOGENTRIES_APIKEY
+});
+
+logger.on('log', function (severity, args) {
+  var _logger;
+  
+  if (logentries_logger.hasOwnProperty(severity)) {
+    _logger = logentries_logger[severity];
+  } else {
+    _logger = logentries_logger.info;
+  }
+  
+  _logger(args);
+});
+
+
+/**
+ * Create and start the Tracker
+ */
 
 var HTTPTracker = require("./lib/tracker").HTTPTracker
   , tracker = new HTTPTracker()
