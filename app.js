@@ -6,7 +6,8 @@ var http = require('http')
   , logentries = require('node-logentries')
   , logger = require('coolog')('app.js', true);
 
-var LOGENTRIES_APIKEY = process.env.LOGENTRIES_APIKEY;
+var LOGENTRIES_APIKEY = process.env.LOGENTRIES_APIKEY
+  , TRACKER_PORT = 6969;
 
 /**
  * Setup logging
@@ -37,5 +38,17 @@ var HTTPTracker = require("./lib/tracker").HTTPTracker
   , tracker = new HTTPTracker()
   , server = http.createServer(tracker.requestHandler());
 
-server.listen(6969, '0.0.0.0');
-logger.ok('Tracker server listening on port ' + 6969);
+
+/**
+ * tracker instance emits some events
+ */
+tracker.on('fileAdded', function (infoHash, file) {
+  file.on('announce',               function (peerId, peer, evt) { /* ... */ });
+  file.on('peerRemoved',            function (peerId) { /* ... */ });
+  file.on('peerBecameLeecher',      function (peerId) { /* ... */ });
+  file.on('peerBecameSeeder',       function (peerId) { /* ... */ });
+  file.on('peerCompletedDownload',  function (peerId) { /* ... */ });
+});
+
+server.listen(TRACKER_PORT);
+logger.ok('Tracker server listening on port ' + TRACKER_PORT);
