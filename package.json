@@ -1,6 +1,6 @@
 {
   "name": "node-bittorrent-tracker",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "node-bittorrent-tracker",
   "main": "lib/tracker/index.js",
   "dependencies": {
