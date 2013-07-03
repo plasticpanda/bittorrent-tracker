@@ -19,13 +19,13 @@ var logentries_logger = logentries.logger({
 logger.on('log', function (severity, args) {
   var _logger;
   
-  if (logentries_logger.hasOwnProperty(severity)) {
+  if ('function' === typeof logentries_logger[severity]) {
     _logger = logentries_logger[severity];
   } else {
     _logger = logentries_logger.info;
   }
   
-  _logger(args);
+  _logger.apply(null, args);
 });
 
 
