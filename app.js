@@ -4,7 +4,8 @@
 
 var http = require('http')
   , logentries = require('node-logentries')
-  , logger = require('coolog')('app.js', true);
+  , coolog = require('coolog')
+  , logger = coolog.logger('app.js', true);
 
 var LOGENTRIES_APIKEY = process.env.LOGENTRIES_APIKEY
   , TRACKER_PORT = 6969;
@@ -17,7 +18,7 @@ var logentries_logger = logentries.logger({
   token: LOGENTRIES_APIKEY
 });
 
-logger.on('log', function (severity, args) {
+coolog.on('log', function (severity, args) {
   var _logger;
   
   if ('function' === typeof logentries_logger[severity]) {
