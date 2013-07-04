@@ -2,10 +2,13 @@
 
 'use strict';
 
+require('sugar');
+
 var http = require('http')
   , logentries = require('node-logentries')
   , coolog = require('coolog')
-  , logger = coolog.logger('app.js', true);
+  , logger = coolog.logger('app.js', true)
+  , util = require('util');
 
 var LOGENTRIES_APIKEY = process.env.LOGENTRIES_APIKEY
   , TRACKER_PORT = 6969;
@@ -14,21 +17,36 @@ var LOGENTRIES_APIKEY = process.env.LOGENTRIES_APIKEY
  * Setup logging
  */
 
-var logentries_logger = logentries.logger({
-  token: LOGENTRIES_APIKEY
-});
+if (LOGENTRIES_APIKEY) {
+  var logentries_logger = logentries.logger({
+    token: LOGENTRIES_APIKEY
+  });
 
-coolog.on('log', function (severity, args) {
-  var _logger;
-  
-  if ('function' === typeof logentries_logger[severity]) {
-    _logger = logentries_logger[severity];
-  } else {
-    _logger = logentries_logger.info;
-  }
-  
-  _logger.apply(null, args);
-});
+  coolog.on('log', function (severity, args) {
+    var _logger;
+    
+    if ('function' === typeof logentries_logger[severity]) {
+      _logger = logentries_logger[severity];
+    } else {
+      _logger = logentries_logger.info;
+    }
+    
+    args = args.map(function (arg) {
+      if ('object' === typeof arg) {
+        try {
+          return JSON.stringify(arg);
+        } catch (e) {
+          // e.g. circular json structures...
+          return util.inspect(arg);
+        }
+      } else {
+        return arg;
+      }
+    });
+    
+    _logger.apply(null, args);
+  });
+}
 
 
 /**
@@ -44,6 +62,7 @@ var HTTPTracker = require("./lib/tracker").HTTPTracker
  * tracker instance emits some events
  */
 tracker.on('fileAdded', function (infoHash, file) {
+  /*jshint unused:false */
   file.on('announce',               function (peerId, peer, evt) { /* ... */ });
   file.on('peerRemoved',            function (peerId) { /* ... */ });
   file.on('peerBecameLeecher',      function (peerId) { /* ... */ });
