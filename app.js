@@ -5,7 +5,7 @@
 require('sugar');
 
 var http = require('http')
-  , logentries = require('node-logentries')
+  , logentries = require('logentries')
   , coolog = require('coolog')
   , logger = coolog.logger('app.js', true)
   , util = require('util');
@@ -15,6 +15,7 @@ var LOGENTRIES_APIKEY = process.env.LOGENTRIES_APIKEY
 
 /**
  * Setup logging
+ * https://gist.github.com/lusentis/5957823
  */
 
 if (LOGENTRIES_APIKEY) {
